@@ -129,7 +129,9 @@ console.log(id)
 
   //setting up port 
 
-const port=9000;
+//const port=9000;
+
+const PORT=process.env.PORT
 app.listen(port,()=>{
  
     console.log('The Server is started on ',port)
