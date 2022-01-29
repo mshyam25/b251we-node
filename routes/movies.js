@@ -1,10 +1,10 @@
 import express from 'express';
 import { getMovies ,createMovies,getMovieById,deleteMovieById,updateMovieById} from '../helper.js';
-
+import {auth} from '../middleware/auth.js'
 const router=express.Router();
 //get movies by query params and all movies
 
-router.get('/', async (request,response)=>{
+router.route('/').get(async (request,response)=>{
 
 
     //db.movies.find({language:'english',rating:8})
@@ -18,25 +18,7 @@ if(filter.rating)
 
 response.send(movies)
 console.log(request.query)
-  })
-
-
-   //movie search by id
-
-   router.get('/:id',async (request,response)=>{
-
-    const {id}=request.params;
-    console.log(id)
-
-    const movie= await getMovieById(id)
-
-  movie ?  response.send(movie) : response.status(404).send('No Matching movie')
-   
-  })
-
-  //create movies
-
-  router.post('/', async (request,response)=>{
+  }).post(async (request,response)=>{
 
 
     const data=request.body;
@@ -48,8 +30,20 @@ console.log(request.query)
 
 response.send(result)
   })
-//delete by id
-  router.delete('/:id',async (request,response)=>{
+
+
+   //movie search by id
+
+   router.route('/:id').get(async (request,response)=>{
+
+    const {id}=request.params;
+    console.log(id)
+
+    const movie= await getMovieById(id)
+
+  movie ?  response.send(movie) : response.status(404).send('No Matching movie')
+   
+  }).delete(async (request,response)=>{
 
     //db.collections.deleteOne({id:101})
     
@@ -58,22 +52,22 @@ response.send(result)
     const result= await deleteMovieById(id)
 
     response.send(result)
+    }).put(async(request,response)=>{
+
+      //db.collections.updateOne({id:101},{$set: {rating: 8}})
+    const data=request.body
+      const {id}=request.params
+    console.log(id)
+      const movie= await updateMovieById(id,data)
+    
+      response.send(movie)
+    
+      //movie ?  response.send(movie) : response.status(404).send('No Matching movie')
     })
 
 
-//update rating by id
+  //create movies
 
-router.put('/:id',async(request,response)=>{
 
-  //db.collections.updateOne({id:101},{$set: {rating: 8}})
-const data=request.body
-  const {id}=request.params
-console.log(id)
-  const movie= await updateMovieById(id,data)
-
-  response.send(movie)
-
-  //movie ?  response.send(movie) : response.status(404).send('No Matching movie')
-})
 
   export const moviesRouter=router

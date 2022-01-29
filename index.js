@@ -5,10 +5,14 @@
 import express from 'express';
 import {MongoClient} from 'mongodb'; //type : module
 import dotenv from 'dotenv';
+import chalk from 'chalk';
 
 import {moviesRouter} from './routes/movies.js'
+import bcrypt from 'bcrypt'
+import passwordValidator from 'password-validator';
+import {usersRouter} from './users.js'
 
-
+import cors from 'cors';
 
 dotenv.config(); // getting all env keys
 
@@ -26,7 +30,7 @@ async function createConnection(){
 
     const client=new MongoClient(MONGO_URL);
     await client.connect(); // returns a promise
-    console.log('Mongo DB Connected')
+    console.log(chalk.bold.blue.inverse('Mongo DB Connected'))
 return client
  
 }
@@ -47,6 +51,10 @@ app.get('/',(request,response)=>{
 //app.use -> intercets every request
 app.use(express.json()) //Intercepts all requests and parses the data into json
 app.use("/movies",moviesRouter) 
+
+app.use('/users',usersRouter)
+
+//app.use(cors())
 //express.json() -> inbuild middleware
 
 //setting up port 
@@ -56,7 +64,40 @@ app.use("/movies",moviesRouter)
 const PORT=process.env.PORT
 app.listen(PORT,()=>{
  
-    console.log('The Server is started on ',PORT)
+    console.log(chalk.bold.red.inverse('The Server is started on '),PORT)
 })
+
+
+export async function genPassword(password)
+{
+    const salt=await bcrypt.genSalt(10)
+
+   // console.log(salt)
+
+    const hashedPassword=await bcrypt.hash(password,salt)
+
+    //console.log(hashedPassword)
+
+    return hashedPassword
+}
+
+export function validatePassword(password)
+{
+
+    const schema= new passwordValidator();
+
+    schema.is().min(8)
+    .is().max(15)
+    .has().uppercase()
+    .has().lowercase()
+    .has().digits()
+    .has().symbols()
+    .has().not().spaces()
+
+
+const result=schema.validate(password)
+console.log(result)
+return result
+}
 
 

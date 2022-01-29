@@ -1,4 +1,5 @@
 import { client } from './index.js';
+import bcrypt from 'bcrypt';
 
  async function getMovies(filter) {
   return await client.db('b251we')
@@ -12,6 +13,27 @@ import { client } from './index.js';
         .collection('movies')
         .insertMany(data);
 }
+
+async function createUser(data) {
+  return await client.db('b251we')
+      .collection('users')
+      .insertOne(data);
+}
+
+
+async function userExists(username){
+
+  return await client.db('b251we')
+  .collection('users')
+  .findOne({username:username})
+}
+
+async function validPassword(password,storedPassword)
+{
+  const validity=await bcrypt.compare(password,storedPassword)
+  return validity
+}
+
   
    async function getMovieById(id) {
     return await client.db('b251we')
@@ -33,4 +55,4 @@ import { client } from './index.js';
     .updateOne({id: +id},{$set: data})
   }
 
-  export {getMovieById,createMovies,getMovies,deleteMovieById,updateMovieById}
+  export {getMovieById,createMovies,getMovies,deleteMovieById,updateMovieById,createUser,userExists,validPassword}
