@@ -34,10 +34,10 @@ response.send(result)
 
    //movie search by id
 
-   router.route('/:id').get(async (request,response)=>{
+   router.route('/:_id').get(async (request,response)=>{
 
-    const {id}=request.params;
-    console.log(id)
+    const {_id}=request.params;
+    console.log(_id)
 
     const movie= await getMovieById(id)
 
