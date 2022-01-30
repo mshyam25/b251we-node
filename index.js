@@ -18,6 +18,17 @@ dotenv.config(); // getting all env keys
 
 export const app=express(); // alternative to express - hapi
 
+//middleware
+
+//app.use -> intercets every request
+app.use(express.json()) //Intercepts all requests and parses the data into json
+app.use(cors()) 
+app.use("/movies",moviesRouter) 
+
+app.use('/users',usersRouter)
+
+
+//express.json() -> inbuild middleware
   //setting connection with mongodb
 
 //const MONGO_URL="mongodb://localhost"; //"mongodb://localhost:27017"
@@ -45,17 +56,7 @@ app.get('/',(request,response)=>{
     response.send('Hello, Villans')
 })
 
-//middleware
 
-
-//app.use -> intercets every request
-app.use(express.json()) //Intercepts all requests and parses the data into json
-app.use("/movies",moviesRouter) 
-
-app.use('/users',usersRouter)
-
-app.use(cors())
-//express.json() -> inbuild middleware
 
 //setting up port 
 
