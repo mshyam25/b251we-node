@@ -54,7 +54,7 @@ app.use("/movies",moviesRouter)
 
 app.use('/users',usersRouter)
 
-//app.use(cors())
+app.use(cors())
 //express.json() -> inbuild middleware
 
 //setting up port 
