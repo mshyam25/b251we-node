@@ -34,12 +34,12 @@ response.send(result)
 
    //movie search by id
 
-   router.route('/:_id').get(async (request,response)=>{
+   router.route('/:id').get(async (request,response)=>{
 
-    const {_id}=request.params;
-    console.log(_id)
+    const {id}=request.params;
+    console.log(id)
 
-    const movie= await getMovieById(_id)
+    const movie= await getMovieById(id)
 
   movie ?  response.send(movie) : response.status(404).send('No Matching movie')
    
