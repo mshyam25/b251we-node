@@ -39,7 +39,7 @@ response.send(result)
     const {_id}=request.params;
     console.log(_id)
 
-    const movie= await getMovieById(id)
+    const movie= await getMovieById(_id)
 
   movie ?  response.send(movie) : response.status(404).send('No Matching movie')
    
