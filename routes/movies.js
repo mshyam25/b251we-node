@@ -37,7 +37,7 @@ response.send(result)
    router.route('/:id').get(async (request,response)=>{
 
     const {id}=request.params;
-    console.log(id)
+    console.log('id is : ' +id)
 
     const movie= await getMovieById(id)
 

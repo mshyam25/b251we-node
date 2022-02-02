@@ -50,15 +50,17 @@ router.route('/signin').get(async (request,response)=>{
     const storedPassword=usernameValid.password
     const validatePassword=await validPassword(password,storedPassword)
    
-    if(validatePassword===false)
+    if(validatePassword)
     {
-    response.status(401).send({message: 'Invalid Credentials🤯'})
-    return
-    }
-    else{
+
       const token=await jwt.sign({id:usernameValid._id},process.env.SECRET_KEY)
       response.status(200).send({message:'Successful login',
     token:token})
+    
+    }
+    else{
+      response.status(401).send({message: 'Invalid Credentials🤯'})
+    return
     }
   }
   else
